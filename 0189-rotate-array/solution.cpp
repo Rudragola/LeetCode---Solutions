@@ -2,9 +2,7 @@ class Solution {
 public:
     void reverse(vector<int> &nums , int s , int e){
         while(s<e){
-            int temp = nums[s];
-            nums[s] = nums[e];
-            nums[e] = temp;
+            swap(nums[s] , nums[e]);
             s++;
             e--;
         }
