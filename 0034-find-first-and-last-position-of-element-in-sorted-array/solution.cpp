@@ -1,51 +1,57 @@
 class Solution {
 public:
-    int firstOccur(vector<int>& nums, int target){
-        int str = 0;
-        int end = nums.size() -1;
-        int first = -1;
 
-        while(str<=end){
-            int mid = str + (end - str)/2;
+    int firstOccur(vector<int>& nums, int target , int n){
+        int st = 0;
+        int end = n-1;
+        int ans = -1;
+
+        while(st <= end){
+            int mid = st + (end - st)/2;
 
             if(nums[mid] == target){
-                first = mid;
+                ans = mid;
                 //go left
                 end = mid - 1;
-            }else if(target<nums[mid]){
-                end= mid - 1;
+            }else if(nums[mid]<target){
+                //go right
+                st = mid + 1;
             }else{
-                str = mid + 1;
+                //go left
+                end = mid - 1;
             }
         }
-        return first;
+        return ans;
     }
 
-    int lastOccur(vector<int>& nums, int target){
-        int str = 0;
-        int end = nums.size() -1;
-        int last = -1;
+    int lastOccur(vector<int>& nums, int target , int n){
+        int st = 0;
+        int end = n-1;
+        int ans = -1;
 
-        while(str<=end){
-            int mid = str + (end - str)/2;
+        while(st <= end){
+            int mid = st + (end - st)/2;
 
             if(nums[mid] == target){
-                last = mid;
+                ans = mid;
                 //go right
-                str = mid + 1;
-            }else if(target<nums[mid]){
-                end= mid - 1;
+                st = mid + 1;
+            }else if(nums[mid]<target){
+                //go right
+                st = mid + 1;
             }else{
-                str = mid + 1;
+                //go left
+                end = mid - 1;
             }
         }
-        return last;
+        return ans;
     }
-
-
+    
     vector<int> searchRange(vector<int>& nums, int target) {
-        int fo = firstOccur(nums , target);
-        int lo = lastOccur(nums , target);
-        return {fo , lo};
+        int n = nums.size();
+        int fo = firstOccur(nums , target , n);
+        int lo = lastOccur(nums , target , n);
+        
+        return {fo,lo};
     }
 };
