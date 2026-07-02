@@ -1,43 +1,32 @@
 class Solution {
 public:
-    bool isPalindrome(string s) {
-        /* string cleaned;
-        for(char c: s){
-            if(isalnum(c)){
-                cleaned += tolower(c);
-            }
+
+    bool ifAlphaNumeric(char ch){
+        if((ch>= '0' && ch <= '9') || ('a' <= tolower(ch) && 'z'>= tolower(ch))){
+            return true;
         }
-
-        int i = 0;
-        int j = cleaned.length()-1;
-        while(i<j){
-            if(cleaned[i] != cleaned[j]){
-                return false;
-            }
-            else{
-                i++;
-                j--;
-            }
-        }
-        return true; */
-
-
-        //RECURSION VERSION
-
-        return check(s , 0 ,s.length() - 1);
-
-        
+        return false;
     }
 
-    bool check(string& s,int left , int right){
-        while(left<right && !isalnum(s[left])) left++;
-
-        while(left<right && !isalnum(s[right])) right--;
-        
-        if(left>=right) return true;
-
-        if(tolower(s[left]) != tolower(s[right])) return false;
-
-        return check(s , left+1 , right -1);
+    bool isPalindrome(string s) {
+        int n = s.length();
+        int st = 0;
+        int end = n - 1;
+        while(st < end){
+            if(!ifAlphaNumeric(s[st])){
+                st++;
+                continue;
+            }
+            if(!ifAlphaNumeric(s[end])){
+                end--;
+                continue;
+            }
+            if(tolower(s[st]) != tolower(s[end])){
+                return false;
+            }
+            st++;
+            end--;
+        }
+        return true;
     }
 };
