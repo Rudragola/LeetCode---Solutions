@@ -9,12 +9,10 @@ public:
             int mis = arr[mid] - (mid +  1);
             if (mis < k) {
                 low = mid + 1;
-                
             } else {
                 high = mid - 1;
-                
             }
         }
-        return k + high + 1;
+        return k + low;
     }
 };
