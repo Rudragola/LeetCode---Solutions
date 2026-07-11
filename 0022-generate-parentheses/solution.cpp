@@ -1,37 +1,23 @@
 class Solution {
 public:
-
-    vector<string> answer = {};
-    vector<char> currentSeq = {};
-    void recursion(int index , int sum , int N){
-
-        if(index == N){
-            if(sum == 0){
-                string ans = "";
-                for(int i = 0;i<N;i++){
-                    ans += currentSeq[i];
-                }
-                answer.push_back(ans);
-            }
-            return;
+    void recur(vector<string>& result, string curr, int n ,int open , int close) {
+        if (curr.size() == n*2){
+            result.push_back(curr);
         }
-
-        //open bracket
-        currentSeq.push_back('(');
-        recursion(index+1,sum+1,N);
-        currentSeq.pop_back();
-
-        //close bracket
-        if(sum>=1){
-            currentSeq.push_back(')');
-            recursion(index+1,sum-1,N);
-            currentSeq.pop_back();
+        if (open < n) {
+            recur(result, curr + "(", n , open + 1, close);
+        }
+        if (open > close) {
+            recur(result, curr + ")", n , open , close + 1);
         }
     }
-    vector<string> generateParenthesis(int n) {
 
-        recursion(0,0,n*2);
-        return answer;
-        
+    vector<string> generateParenthesis(int n) {
+        if(n == 1){
+            return {"()"};
+        }
+        vector<string> result;
+        recur(result , "" , n , 0 , 0);
+        return result;
     }
 };
