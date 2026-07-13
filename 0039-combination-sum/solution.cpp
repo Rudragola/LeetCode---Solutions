@@ -1,28 +1,26 @@
 class Solution {
 public:
-
-    vector<vector<int>> ans = {};
-    vector<int> currentSeq = {};
-    void recursion(vector<int>& candidates , int target , int start){
-
-        if(target == 0){
-            ans.push_back(currentSeq);
+    vector<vector<int>> ans;
+    void recur(int i ,vector<int>& nums, int tar , int curr , vector<int>& cur){
+        if(curr == tar){
+            ans.push_back(cur);
             return;
+        } 
+
+        if(i == nums.size())  return;
+        if(nums[i] + curr <= tar){
+            cur.push_back(nums[i]);
+            recur(i,nums,tar,curr+nums[i],cur);
+            cur.pop_back();
         }
 
-        for(int i = start;i<candidates.size();i++){
-            if(target >= candidates[i]){
-                currentSeq.push_back(candidates[i]);
-                recursion(candidates , target - candidates[i] , i);
-                currentSeq.pop_back();
-            }
-        }
+        recur(i+1,nums,tar,curr,cur);
+        
     }
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        recursion(candidates,target,0);
+    
+    vector<vector<int>> combinationSum(vector<int>& nums, int tar) {
+        vector<int> cur;
+        recur(0,nums,tar,0,cur);
         return ans;
     }
 };
-
-
-
