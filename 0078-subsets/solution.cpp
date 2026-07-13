@@ -1,27 +1,21 @@
 class Solution {
 public:
-
-    vector<vector<int>> answer = {};
-    vector<int> currentSeq = {};
-
-    void recursion(vector<int>& nums , int index){
-
-        //base case
-        if(index == nums.size()){
-            answer.push_back(currentSeq);
+    vector<vector<int>> ans;
+    vector<int> cur;
+    void subSets(int i , vector<vector<int>>& ans ,vector<int>& nums,vector<int>& cur ){
+        if(i == nums.size()){
+            ans.push_back(cur);
             return;
         }
 
-        //option 1 -> to choose the element 
-        currentSeq.push_back(nums[index]);
-        recursion(nums , index+1);
-        currentSeq.pop_back();
+        cur.push_back(nums[i]);
+        subSets(i+1,ans,nums,cur);
+        cur.pop_back();
 
-        //option2 -> to not to choose the element
-        recursion(nums, index+1);
+        subSets(i+1,ans,nums,cur);
     }
     vector<vector<int>> subsets(vector<int>& nums) {
-        recursion(nums , 0);
-        return answer;
+        subSets(0,ans,nums,cur);
+        return ans;
     }
 };
