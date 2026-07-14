@@ -1,59 +1,60 @@
 class Solution {
 public:
-    bool isSafe(vector<string>& board, int row, int col, int n) {
-        // horizontal
-        for (int i = 0; i < n; i++) {
-            if (board[row][i] == 'Q') {
+    bool isPossible(int row, int col, int n, vector<string>& cur,
+                    vector<vector<string>>& ans) {
+        int copR = row;
+        int copC = col;
+
+        // upper Left diagonal
+        while (row >= 0 && col >= 0) {
+            if (cur[row][col] == 'Q')
                 return false;
-            }
+            row--;
+            col--;
         }
 
-        // vertical
-        for (int i = 0; i < n; i++) {
-            if (board[i][col] == 'Q') {
+        // in row
+        row = copR;
+        col = copC;
+        while (col >= 0) {
+            if (cur[row][col] == 'Q')
                 return false;
-            }
+            col--;
         }
 
-        // left diagoal
-        for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
-            if (board[i][j] == 'Q') {
+        // lower left diagonal
+        row = copR;
+        col = copC;
+        while (row < n && col >= 0) {
+            if (cur[row][col] == 'Q')
                 return false;
-            }
+            row++;
+            col--;
         }
 
-        // right diagonal
-        for (int i = row, j = col; i >= 0 && j < n; i--, j++) {
-            if (board[i][j] == 'Q') {
-                return false;
-            }
-        }
-
-        // position is safe
         return true;
     }
 
-    void nQueens(vector<string>& board, int row, int n,
-                 vector<vector<string>>& ans) {
-        if (row == n) {
-            ans.push_back(board);
+    void recur(int col, int n, vector<vector<string>>& ans,
+               vector<string>& cur) {
+        if (col == n) {
+            ans.push_back(cur);
             return;
         }
 
-        for (int i = 0; i < n; i++) {
-            if (isSafe(board, row, i, n)) {
-                board[row][i] = 'Q';
-                nQueens(board, row + 1, n, ans);
-                board[row][i] = '.';
+        for (int row = 0; row < n; row++) {
+            if (isPossible(row, col, n, cur, ans)) {
+                cur[row][col] = 'Q';
+                recur(col + 1, n, ans, cur);
+                cur[row][col] = '.';
             }
         }
     }
 
     vector<vector<string>> solveNQueens(int n) {
-        vector<string> board(n, string(n, '.'));
         vector<vector<string>> ans;
-
-        nQueens(board, 0, n, ans);
+        vector<string> cur(n, string(n, '.'));
+        recur(0, n, ans, cur);
         return ans;
     }
 };
